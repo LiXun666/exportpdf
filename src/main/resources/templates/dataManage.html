@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试计划管理</title>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/h-ui/css/H-ui.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/h-ui.admin/css/H-ui.admin.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/h-ui.admin/skin/default/skin.css}" id="skin" />
+    <link rel="stylesheet" type="text/css" th:href="@{/h-ui.admin/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/h-ui/js/H-ui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/h-ui.admin/js/H-ui.admin.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/echarts/echarts.min.js}"></script>>
+    <script th:src="@{assets/js/bootstrap.min.js}"></script>
+<!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+    <script type="text/javascript">
+// <!--        $(function () { $('.collapseOne').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseTwo').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseThree').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseFour').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseOneOne').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseTwoTwo').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseThreeThree').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseFourFour').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+// <!--        $(function () { $('.collapseFive').collapse({-->
+// <!--            toggle: false-->
+// <!--        })});-->
+
+    </script>
+
+
+</head>
+
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 测试计划管理 <span class="c-gray en">&gt;</span> 测试计划管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container" >
+    <div class="panel panel-default" style="height: 82vh">
+        <div class="panel-header" style="    margin-top: -1%;    height: 8%;">
+            <div style="    margin-top: -1.5%;">
+
+                    <div>
+                        <p style="    position: absolute;margin-top: 2%;">测试申请编号</p>
+                        <input type="text" class="form-control" placeholder="请输入测试申请编号" style=" position: absolute;margin-left: 6%;margin-top: 1.6%;width: 10%;">
+                    </div>
+                <div>
+                    <input class="btn btn-primary size-MINI radius" type="button" style="position: absolute;right: 29%;;margin-top:  1.6%;" value="搜索"/>
+<!--                    <input class="btn btn-success radius" type="button" style="position: absolute;right: 23%;;margin-top:  1.6%;" value="重置"/>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div style="margin-top: 1%">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                    <tr class="text-c">
+                        <th >序号</th>
+                        <th >测试项目编号</th>
+                        <th >项目名称</th>
+                        <th >申请人</th>
+                        <th >状态</th>
+<!--                        <th >执行时间</th>-->
+<!--                        <th >创建时间</th>-->
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                <tr class="text-c" th:each="report:${reportsList}">
+                    <td th:text="${report.getId()}"></td>
+                    <td th:text="${report.getTestNo()}"></td>
+                    <td th:text="${report.getProjectName()}"></td>
+                    <td th:text="${report.getApplicant()}"></td>
+                    <td class="statuss" th:text="${report.getCurState()}"></td>
+<!--                    <td class="person"th:text="${table.getFunctional_people()}"></td>-->
+<!--                    <td th:text="${table.getExecution_time()}" style="width: 10%"></td>-->
+
+
+                    <td>
+                        <a><input class="btn btn-primary size-MINI radius" data-toggle="modal" data-target="#acc" type="button" value="详情"></a>
+                        <a th:href="@{'/home/downloadPDF/' + ${report.getId()}}"><input class="btn btn-primary size-MINI radius" type="button" value="下载"></a>
+                    </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--详情对话框-->
+<div id="acc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: auto" >
+    <!-- 弹出对话框 -->
+    <div class="modal-dialog"  style=" z-index: 1040">
+        <div class="modal-content radius" style="width: 157%;margin-top: 7%;margin-left: -20%;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="text-align: center;">测试项目执行详情</h3>
+
+                <a class="close" data-dismiss="modal" aria-hidden="true">×</a>
+            </div>
+            <div class="modal-body">
+                <form >
+                    <div style="margin-top: 0%;">
+                        <h4 style="position: absolute;margin-top: -2%;" id="idTwo"><span>NO.</span></h4>
+                    </div>
+                    <div  class="panel-group" id="accordion" style="margin-top: 3%;">
+                        <div class="panel panel-default" style="margin-top: -2%;">
+                            <div class="panel-heading" >
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#bccordion"
+                                       href="#collapseOneOne">
+                                        <strong style="">测试项目用例执行详情</strong>
+                                        <b class="arrow icon-angle-down"></b>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="collapseOne">
+                                <div class="panel-body">
+                                    <div class="el-col el-col-12">
+                                        <dl>
+                                            <dt>状态</dt>
+                                            <dd id="sstausTwo" style="color: rgb(144, 147, 153);margin-left: 10%;margin-top: -2%;"></dd>
+                                            <!----> <!----> <!----> <!----> <!---->
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseTwo">
+                                        <strong>测试用例基本信息</strong>
+                                        <b class="arrow icon-angle-down"></b>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="collapseTwo">
+                                <div class="panel-body">
+                                    <div>
+                                        <div>
+                                            <span>用例编号</span>
+                                            <span style="margin-top: -4.4%;margin-left: 7%;" id="useCaseNumberTwo"></span>
+                                        </div>
+                                        <div style="    margin-top: -3%;margin-left: 46%;">
+                                            <span>用例名称</span>
+                                            <span style="margin-top: -4.4%;margin-left: 15%;" id="useCaseNameTwo">新设备接入</span>
+                                        </div>
+                                        <div style="margin-top: 2%;">
+                                            <span>测试服务</span>
+                                            <span style="margin-top: -6.4%;margin-left: 7%;" id="testServiceTwo">功能测试</span>
+                                        </div>
+                                        <div style="    margin-top: -3%;margin-left: 46%;">
+                                            <span>测试功能项</span>
+                                            <span style="margin-top: -6.4%;margin-left: 12%;" id="testFunctionItemTwo">设备接入</span>
+                                        </div>
+                                        <div style="margin-top: 2%;">
+                                            <span>类型</span>
+                                            <span style="margin-top: -6.4%;margin-left: 10%;" id="typeTwo">ALL</span>
+                                        </div>
+                                        <div style="    margin-top: -3%;margin-left: 46%;">
+                                            <span>版本</span>
+                                            <span style="margin-top: -6.4%;margin-left: 21%;" id="versionTwo">ALL</span>
+                                        </div>
+                                        <div style="margin-top: 2%;">
+                                            <span>优先级</span>
+                                            <span style="margin-top: -6.4%;margin-left: 9%;" id="priorityTwo">高</span>
+                                        </div>
+                                        <div style="margin-top: -3%;margin-left: 46%;">
+                                            <span>测试方式</span>
+                                            <span style="margin-top: -6.4%;margin-left: 15%;" id="testMethodTwo">黑盒</span>
+                                        </div>
+                                        <div style="margin-top: 2%;    ">
+                                            <span>设计人员</span>
+                                            <span style="margin-top: -6.4%;margin-left: 7%;" id="designerTwo">admin</span>
+                                        </div>
+                                        <div style="margin-top: -2.4%;margin-left: 46%;">
+                                            <span>设计时间</span>
+                                            <span style="margin-top: -6.4%;margin-left: 15%;" id="designTimeTwo">2021-7-17</span>
+                                        </div>
+                                        <br>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseThree">
+                                        <strong>测试用例详情</strong>
+                                        <b class="arrow icon-angle-down"></b>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="collapseThree">
+                                <div class="panel-body">
+                                    <div>
+                                        <span>测试目标</span>
+                                        <div style="margin-top: -2.3%;width: 35%;margin-left: 9%;">
+                                            <span style="margin-top: -4.4%;margin-left: 7%;
+             overflow: hidden;text-overflow: ellipsis;word-break: break-all;" id="testTargetTwo">接入贴片机、印刷机、回流焊、检测机等设备接入成功，且功能正常</span>
+                                        </div>
+
+                                    </div>
+                                    <div style="    margin-top: -4.5%;margin-left: 46%;">
+                                        <span >前置条件</span>
+                                        <span style="margin-top: -3%;margin-left: 15%;" id="preconditionTwo">无</span>
+                                    </div>
+                                    <div style="margin-top: 3%;">
+                                        <span>预期结果</span>
+                                        <div style="margin-top: -2.3%;width: 35%;margin-left: 9%;">
+                                            <span style="margin-top: -4.4%;margin-left: 7%;
+             overflow: hidden;text-overflow: ellipsis;word-break: break-all;" id="expectedOutcomeTwo">发起接入新设备的操作</span>
+                                        </div>
+
+                                    </div>
+                                    <div style="    margin-top: -4.5%;margin-left: 46%;">
+                                        <span >资源文件</span>
+                                        <span style="margin-top: -3%;margin-left: 15%;" id="resourceTwo">无</span>
+                                    </div>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseFour">
+                                        <strong>执行步骤</strong>
+                                        <b class="arrow icon-angle-down"></b>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="collapseFour">
+                                <div class="panel-body">
+                                    <div style="margin-top: 1%">
+                                        <table class="table table-border table-bordered table-hover table-bg table-sort">
+                                            <thead>
+                                            <tr class="text-c">
+                                                <th >序号</th>
+                                                <th >操作步骤</th>
+                                                <th >预期结果</th>
+                                                <th >实际结果</th>
+                                                <th >执行结果</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr class="text-c" >
+                                                <td>1</td>
+                                                <td id="doStepsTwo"></td>
+                                                <td id="doExpectedOutcomeTwo"></td>
+                                                <td id="actualResultsTwo"></td>
+                                                <td id="implementResultsTwo"></td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" onclick="createAnalyseModel()">确定</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // $(".trueupdate").click(function () {
+    //     var idd = this.name;
+    //
+    //     var trueResults= document.getElementById("actualResults").value;
+    //
+    //      var doResult=document.getElementById("selectResult").value;
+    //
+    //
+    //     $.ajax({
+    //         async : false,
+    //         url : '/updateModelDetail',
+    //         data:{
+    //             "idd" :idd,
+    //             "trueResults":trueResults,
+    //             "doResult":doResult
+    //         },
+    //         success : function(data) {
+    //
+    //             // $(".update").eq(idd-1).attr("disabled",true);
+    //
+    //         }
+    //     });
+    // })
+
+</script>
+<script>
+    // $(".detail").click(function () {
+    //
+    //     var id = this.name;
+    //
+    //     var uuid =$(".uuid").eq(id-1).text();
+    //
+    //     var caseid=$(".caseid").eq(id-1).text();
+    //
+    //     var statuss=$(".statuss").eq(id-1).text();
+    //
+    //     var person = $(".person").eq(id-1).text();
+
+
+    //     $.ajax({
+    //
+    //         async : true,
+    //         url : "/modelDetail",
+    //         data:{
+    //             "id":id,
+    //             "uuid" : uuid,
+    //             "caseid": caseid,
+    //             "statuss": statuss,
+    //             "person": person
+    //
+    //
+    //         },
+    //         success : function(data) {
+    //
+    //
+    //
+    //             $("#idTwo").html(data.taskUuid);
+    //             $("#sstausTwo").html(data.status);
+    //             $("#useCaseNumberTwo").html(data.useCaseNumber);
+    //             $("#useCaseNameTwo").html(data.useCaseName);
+    //             $("#testServiceTwo").html(data.testService);
+    //             $("#testFunctionItemTwo").html(data.testFunctionItem);
+    //             $("#typeTwo").html(data.typeT);
+    //             $("#versionTwo").html(data.version);
+    //             $("#priorityTwo").html(data.priority);
+    //             $("#testMethodTwo").html(data.testMethod);
+    //             $("#designerTwo").html(data.functional_people);
+    //             $("#designTimeTwo").html(data.designTime);
+    //             $("#testTargetTwo").html(data.testTarget);
+    //             $("#preconditionTwo").html(data.precondition);
+    //             $("#expectedOutcomeTwo").html(data.expectedOutcome);
+    //             $("#resourceTwo").html(data.resource);
+    //             $("#doStepsTwo").html(data.doSteps);
+    //
+    //             $("#doExpectedOutcomeTwo").html(data.doExpectedOutcome);
+    //             $("#actualResultsTwo").html(data.true_result);
+    //             $("#implementResultsTwo").html(data.do_result);
+    //         }
+    //     });
+    // })
+    //
+    // $(".update").click(function () {
+    //
+    //     var id = this.name;
+    //
+    //     var uuid =$(".uuid").eq(id-1).text();
+    //
+    //     var caseid=$(".caseid").eq(id-1).text();
+    //
+    //     var statuss=$(".statuss").eq(id-1).text();
+    //
+    //     var person = $(".person").eq(id-1).text();
+
+
+
+
+        //
+        // $.ajax({
+        //
+        //     async : true,
+        //     url : "/modelDetail",
+        //     data:{
+        //         "id":id,
+        //         "uuid" : uuid,
+        //         "caseid": caseid,
+        //         "statuss": statuss,
+        //         "person": person
+        //
+        //
+        //     },
+        //     success : function(data) {
+        //         $("#id").html(data.taskUuid);
+        //         $("#sstaus").html(data.status);
+        //         $("#useCaseNumber").html(data.useCaseNumber);
+        //         $("#useCaseName").html(data.useCaseName);
+        //         $("#testService").html(data.testService);
+        //         $("#testFunctionItem").html(data.testFunctionItem);
+        //         $("#type").html(data.type);
+        //         $("#version").html(data.version);
+        //         $("#priority").html(data.priority);
+        //         $("#testMethod").html(data.testMethod);
+        //         $("#designer").html(data.functional_people);
+        //         $("#designTime").html(data.designTime);
+        //         $("#testTarget").html(data.testTarget);
+        //         $("#precondition").html(data.precondition);
+        //         $("#expectedOutcome").html(data.expectedOutcome);
+        //         $("#resource").html(data.resource);
+        //         $("#doSteps").html(data.doSteps);
+        //         $("#doExpectedOutcome").html(data.doExpectedOutcome);
+        //
+        //          $("#actualResults").val(data.true_result);
+        //         $(".trueupdate").attr('name',id);
+        //
+        //
+        //
+        //     }
+        // });
+    // })
+
+</script>
+
+</body>
+</html>
+
