@@ -5,7 +5,7 @@ import com.exportpdf.demo.mapper.ReportsMapper;
 import com.exportpdf.demo.pojo.Goods;
 import com.exportpdf.demo.pojo.Reports;
 import com.exportpdf.demo.service.PdfTableService;
-import com.exportpdf.demo.util.PdfUtil;
+import com.exportpdf.demo.util.*;
 import com.exportpdf.demo.util.ViewPdfUtil;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
@@ -39,6 +39,7 @@ public class HomeController {
     public void viewexistpdf() {
         String filePath = "/data/springboot2/测试报告.pdf";
         PdfUtil.readPdfFile(filePath);
+
     }
 
     //把数据保存到pdf文件
